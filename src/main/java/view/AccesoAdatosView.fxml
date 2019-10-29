@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="viewAccesoAdatos" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<TabPane prefHeight="597.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+			<tabs>
+				<Tab fx:id="tabAccesoFicheros" text="Acceso a ficheros">
+					<content>
+						<GridPane alignment="CENTER" hgap="5.0" minHeight="0.0" minWidth="0.0" prefHeight="475.0" prefWidth="800.0" vgap="5.0">
+							<columnConstraints>
+								<ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+								<ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+								<ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+								<ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+							</columnConstraints>
+							<rowConstraints>
+								<RowConstraints />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" />
+								<RowConstraints fillHeight="false" prefHeight="200.0" vgrow="NEVER" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+							</rowConstraints>
+							<children>
+								<Label text="Ruta actual" textAlignment="CENTER" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+									<opaqueInsets>
+										<Insets />
+									</opaqueInsets>
+									<GridPane.margin>
+										<Insets left="15.0" right="15.0" />
+									</GridPane.margin>
+								</Label>
+								<Button fx:id="btnCrear" mnemonicParsing="false" onAction="#clickBtnCrear" prefWidth="60.0" text="Crear" textAlignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+									<GridPane.margin>
+										<Insets left="15.0" right="15.0" />
+									</GridPane.margin>
+								</Button>
+								<Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#click" prefWidth="60.0" text="Eliminar" GridPane.columnIndex="1" GridPane.rowIndex="2">
+									<GridPane.margin>
+										<Insets left="15.0" right="15.0" />
+									</GridPane.margin>
+								</Button>
+								<Button fx:id="btnMover" minWidth="60.0" mnemonicParsing="false" onAction="#clickBtnMover" text="Mover" GridPane.columnIndex="2" GridPane.rowIndex="2">
+									<GridPane.margin>
+										<Insets left="15.0" right="15.0" />
+									</GridPane.margin>
+								</Button>
+								<Button fx:id="btnFicheros" mnemonicParsing="false" onAction="#clickBtnFicheros" prefWidth="140.0" text="Ver ficheros y carpetas" GridPane.columnSpan="2" GridPane.rowIndex="4">
+									<GridPane.margin>
+										<Insets left="15.0" right="15.0" />
+									</GridPane.margin>
+								</Button>
+								<ListView fx:id="lvFicheros" maxHeight="400.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="5" GridPane.rowIndex="5" GridPane.vgrow="ALWAYS">
+									<GridPane.margin>
+										<Insets bottom="15.0" left="15.0" right="30.0" top="15.0" />
+									</GridPane.margin>
+								</ListView>
+								<Button fx:id="btnContenido" mnemonicParsing="false" onAction="#clickBtnContenido" prefHeight="25.0" prefWidth="140.0" text="Ver contenido fichero" GridPane.columnSpan="2" GridPane.rowIndex="7">
+									<GridPane.margin>
+										<Insets left="15.0" right="15.0" />
+									</GridPane.margin>
+								</Button>
+								<Button fx:id="btnModificar" mnemonicParsing="false" onAction="#clickBtnModificar" prefWidth="140.0" text="Modificar fichero" GridPane.columnSpan="2" GridPane.rowIndex="8">
+									<GridPane.margin>
+										<Insets left="15.0" right="15.0" />
+									</GridPane.margin>
+								</Button>
+								<TextArea fx:id="txtContenido" prefHeight="300.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.rowSpan="4" GridPane.vgrow="ALWAYS">
+									<GridPane.margin>
+										<Insets bottom="15.0" left="15.0" right="30.0" top="15.0" />
+									</GridPane.margin>
+								</TextArea>
+								<HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1">
+									<children>
+										<Button fx:id="btnBuscarRutaA" mnemonicParsing="false" onAction="#clickBtnBuscarRuta" text="....">
+											<HBox.margin>
+												<Insets left="15.0" />
+											</HBox.margin>
+										</Button>
+										<TextField fx:id="txtRutaA" HBox.hgrow="ALWAYS">
+											<HBox.margin>
+												<Insets left="15.0" right="30.0" />
+											</HBox.margin>
+										</TextField>
+									</children>
+								</HBox>
+								<HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="5" GridPane.rowIndex="3">
+									<children>
+										<Button fx:id="btnBuscarRutaB" mnemonicParsing="false" onAction="#clickBtnBuscarRutaB" text="....">
+											<HBox.margin>
+												<Insets left="15.0" />
+											</HBox.margin>
+										</Button>
+										<TextField fx:id="txtRutaB" HBox.hgrow="ALWAYS">
+											<HBox.margin>
+												<Insets left="15.0" right="30.0" />
+											</HBox.margin>
+										</TextField>
+									</children>
+								</HBox>
+								<Button fx:id="btnCopiar" mnemonicParsing="false" onAction="#clickBtnCopiar" prefWidth="60.0" text="Copiar" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2">
+									<GridPane.margin>
+										<Insets left="15.0" />
+									</GridPane.margin>
+								</Button>
+								<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+									<children>
+										<RadioButton fx:id="rdFichero" mnemonicParsing="false" text="Es fichero">
+											<padding>
+												<Insets right="15.0" />
+											</padding>
+											<toggleGroup>
+												<ToggleGroup fx:id="tgFicheros" />
+											</toggleGroup>
+										</RadioButton>
+										<RadioButton fx:id="rdCarpeta" mnemonicParsing="false" selected="true" text="Es carpeta" toggleGroup="$tgFicheros" />
+									</children>
+									<opaqueInsets>
+										<Insets />
+									</opaqueInsets>
+								</HBox>
+							</children>
+						</GridPane>
+					</content>
+				</Tab>
+				<Tab fx:id="tabAccesoAleatorio" text="Acceso aleatorio">
+					<content>
+						<VBox alignment="CENTER" minHeight="300.0" minWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+							<children>
+								<TabPane prefHeight="469.0" prefWidth="705.0" tabClosingPolicy="UNAVAILABLE">
+
+									<!--PESTAÑAS -->
+
+									<tabs>
+
+										<Tab fx:id="tabAltasAleatorio" text="Altas">
+											<content>
+												<GridPane alignment="TOP_CENTER" hgap="5.0" minHeight="0.0" minWidth="400.0" prefHeight="443.0" vgap="5.0">
+													<columnConstraints>
+														<ColumnConstraints halignment="CENTER" maxWidth="513.0" minWidth="115.0" prefWidth="122.0" />
+														<ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="400.0" minWidth="-Infinity" prefWidth="388.0" />
+													</columnConstraints>
+													<rowConstraints>
+														<RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
+														<RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" />
+														<RowConstraints prefHeight="30.0" />
+														<RowConstraints prefHeight="30.0" />
+														<RowConstraints maxHeight="27.0" minHeight="16.0" prefHeight="27.0" />
+														<RowConstraints fillHeight="false" maxHeight="88.0" minHeight="10.0" prefHeight="29.0" vgrow="NEVER" />
+														<RowConstraints maxHeight="78.0" minHeight="0.0" prefHeight="16.0" vgrow="ALWAYS" />
+														<RowConstraints minHeight="16.0" prefHeight="26.0" vgrow="ALWAYS" />
+														<RowConstraints maxHeight="137.0" minHeight="1.0" prefHeight="22.0" vgrow="ALWAYS" />
+														<RowConstraints minHeight="44.0" prefHeight="157.0" vgrow="ALWAYS" />
+													</rowConstraints>
+													<children>
+														<TextField fx:id="txtIdResidencia_aleatorio" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+															<GridPane.margin>
+																<Insets left="30.0" right="30.0" />
+															</GridPane.margin>
+														</TextField>
+														<TextField fx:id="txt_nombre_aleatorio" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+															<GridPane.margin>
+																<Insets left="30.0" right="30.0" />
+															</GridPane.margin>
+														</TextField>
+														<TextField fx:id="txt_codUniversidad_aleatorio" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+															<GridPane.margin>
+																<Insets left="30.0" right="30.0" />
+															</GridPane.margin>
+														</TextField>
+														<TextField fx:id="txt_precioMensualAleatorio" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+															<GridPane.margin>
+																<Insets left="30.0" right="30.0" />
+															</GridPane.margin>
+														</TextField>
+														<Label minWidth="100.0" prefHeight="100.0" prefWidth="86.0" text="ID. residencia" textAlignment="CENTER" GridPane.halignment="RIGHT">
+															<opaqueInsets>
+																<Insets left="300.0" />
+															</opaqueInsets>
+															<GridPane.margin>
+																<Insets left="10.0" right="10.0" />
+															</GridPane.margin>
+														</Label>
+														<Label minWidth="100.0" prefHeight="17.0" prefWidth="100.0" text="Nombre" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+															<opaqueInsets>
+																<Insets left="300.0" />
+															</opaqueInsets>
+															<GridPane.margin>
+																<Insets left="10.0" right="10.0" />
+															</GridPane.margin>
+														</Label>
+														<Label minWidth="100.0" prefHeight="100.0" text="Cod. Universidad" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+															<opaqueInsets>
+																<Insets left="300.0" />
+															</opaqueInsets>
+															<GridPane.margin>
+																<Insets left="10.0" right="10.0" />
+															</GridPane.margin>
+														</Label>
+														<Label minWidth="100.0" prefHeight="100.0" text="Precio mensual" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+															<opaqueInsets>
+																<Insets left="300.0" />
+															</opaqueInsets>
+															<GridPane.margin>
+																<Insets left="10.0" right="10.0" />
+															</GridPane.margin>
+														</Label>
+														<Label minWidth="100.0" text="Comedor" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+															<opaqueInsets>
+																<Insets left="300.0" />
+															</opaqueInsets>
+															<GridPane.margin>
+																<Insets left="10.0" right="10.0" />
+															</GridPane.margin>
+														</Label>
+														<Button fx:id="btnAlta_aleatorio" disable="true" mnemonicParsing="false" onAction="#clickBtnAlta_aleatorio" prefHeight="25.0" prefWidth="84.0" text="Alta" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+															<GridPane.margin>
+																<Insets />
+															</GridPane.margin>
+														</Button>
+														<HBox prefHeight="19.0" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+															<children>
+																<RadioButton fx:id="rdSi_aleatorio" mnemonicParsing="false" text="Si">
+																	<HBox.margin>
+																		<Insets left="30.0" />
+																	</HBox.margin>
+																</RadioButton>
+																<RadioButton fx:id="rd_no_aleatorio" mnemonicParsing="false" text="No">
+																	<HBox.margin>
+																		<Insets left="30.0" />
+																	</HBox.margin>
+																</RadioButton>
+															</children>
+														</HBox>
+													</children>
+													<padding>
+														<Insets top="10.0" />
+													</padding>
+												</GridPane>
+											</content>
+										</Tab>
+
+
+
+										<Tab fx:id="tabRegistrosAleatorio" text="Registros y modificar precio">
+											<content>
+												<GridPane alignment="TOP_CENTER" hgap="10.0" minHeight="0.0" minWidth="400.0" prefHeight="443.0" vgap="10.0">
+													<columnConstraints>
+														<ColumnConstraints halignment="CENTER" maxWidth="513.0" minWidth="105.0" prefWidth="178.0" />
+														<ColumnConstraints halignment="CENTER" maxWidth="513.0" minWidth="105.0" prefWidth="178.0" />
+													</columnConstraints>
+													<rowConstraints>
+														<RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
+														<RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
+														<RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" />
+														<RowConstraints prefHeight="30.0" vgrow="NEVER" />
+														<RowConstraints prefHeight="30.0" />
+														<RowConstraints prefHeight="30.0" vgrow="ALWAYS" />
+
+													</rowConstraints>
+													<children>
+														<TextField fx:id="txtIdesidencia_aleatorioAltas" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+															<GridPane.margin>
+																<Insets left="30.0" right="30.0" />
+															</GridPane.margin>
+														</TextField>
+														<Label prefWidth="80.0" text="ID. residencia" textAlignment="CENTER" GridPane.halignment="RIGHT">
+															<opaqueInsets>
+																<Insets left="300.0" />
+															</opaqueInsets>
+															<GridPane.margin>
+																<Insets left="10.0" right="10.0" />
+															</GridPane.margin>
+														</Label>
+														<HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+															<children>
+																<Button fx:id="btnBuscar_aleatorio" disable="true" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#clickBtnBuscar_aleatorio" text="Buscar">
+																	<HBox.margin>
+																		<Insets left="30.0" />
+																	</HBox.margin>
+																</Button>
+																<Button fx:id="btn_modificarPrecio_aleatorio" maxWidth="109.0" minWidth="100.0" mnemonicParsing="false" onAction="#clickBtn_modificarPrecio_aleatorio" prefHeight="25.0" prefWidth="109.0" text="Modificar precio">
+																	<HBox.margin>
+																		<Insets left="25.0" />
+																	</HBox.margin>
+																</Button>
+																<Button fx:id="btnMostrartodo_aleatorio" maxWidth="100.0" minWidth="92.0" mnemonicParsing="false" onAction="#clickBtnMostrartodo_aleatorio" prefHeight="25.0" prefWidth="92.0" text="Mostrar todo">
+																	<HBox.margin>
+																		<Insets left="25.0" />
+																	</HBox.margin>
+																</Button>
+															</children>
+														</HBox>
+														<TableView fx:id="tvBusquedaResidencia_aleatorio" disable="true" prefHeight="44.0" prefWidth="596.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+															<columns>
+																<TableColumn prefWidth="55.0" text="Índice" />
+																<TableColumn prefWidth="175.0" text="Nombre" />																
+																<TableColumn prefWidth="96.0" text="Id. residencia" />
+																<TableColumn prefWidth="110.0" text="Cod.Universidad" />
+																<TableColumn prefWidth="119.0" text="Precio" />
+																<TableColumn prefWidth="145.0" text="Comedor" />
+															</columns>
+															<GridPane.margin>
+																<Insets />
+															</GridPane.margin>
+														</TableView>
+
+														<TableView fx:id="tvTodasResidencias_aleatorio" disable="true" maxHeight="509.0" prefHeight="44.0" prefWidth="509.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+															<columns>
+																<TableColumn prefWidth="55.0" text="Índice" />
+																<TableColumn prefWidth="175.0" text="Nombre" />																
+																<TableColumn prefWidth="96.0" text="Id. residencia" />
+																<TableColumn prefWidth="110.0" text="Cod.Universidad" />
+																<TableColumn prefWidth="119.0" text="Precio" />
+																<TableColumn prefWidth="145.0" text="Comedor" />
+															</columns>
+															<GridPane.margin>
+																<Insets top="30.0" />
+															</GridPane.margin>
+														</TableView>
+                                          <Label prefWidth="80.0" text="Nuevo precio" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                             <opaqueInsets>
+                                                <Insets left="300.0" />
+                                             </opaqueInsets>
+                                             <GridPane.margin>
+                                                <Insets left="10.0" right="10.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <TextField fx:id="txtNuevoPrecio_aleatorio" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <GridPane.margin>
+                                                <Insets left="30.0" right="30.0" />
+                                             </GridPane.margin>
+                                          </TextField>
+													</children>
+													<opaqueInsets>
+														<Insets />
+													</opaqueInsets>
+													<padding>
+														<Insets top="10.0" />
+													</padding>
+												</GridPane>
+											</content>
+										</Tab>
+									</tabs>
+								</TabPane>
+							</children>
+						</VBox>
+
+
+					</content>
+				</Tab>
+
+
+
+				<!-- AQUI PONER ACCESO XML -->
+
+
+
+
+
+
+
+			</tabs>
+		</TabPane>
+	</children>
+</VBox>
