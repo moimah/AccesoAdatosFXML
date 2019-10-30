@@ -16,7 +16,7 @@ public class AccesoAdatosModel {
 	private StringProperty txtRutaB  = new SimpleStringProperty();
 	
 	private ListProperty<String>  lpFicheros = new SimpleListProperty<String>(FXCollections.observableArrayList());
-	private StringProperty seleccionado = new SimpleStringProperty();
+	private StringProperty FicheroSeleccionado = new SimpleStringProperty();
 	private StringProperty txtContenido = new SimpleStringProperty();
 	
 	//PROPERTIES DE ACCESO ALEATORIO
@@ -34,7 +34,6 @@ public class AccesoAdatosModel {
 	
 	
 	//PROPERTIES ACCESO XML
-	
 
 	public final StringProperty txtRutaAProperty() {
 		return this.txtRutaA;
@@ -81,18 +80,18 @@ public class AccesoAdatosModel {
 	}
 	
 
-	public final StringProperty seleccionadoProperty() {
-		return this.seleccionado;
+	public final StringProperty FicheroSeleccionadoProperty() {
+		return this.FicheroSeleccionado;
 	}
 	
 
-	public final String getSeleccionado() {
-		return this.seleccionadoProperty().get();
+	public final String getFicheroSeleccionado() {
+		return this.FicheroSeleccionadoProperty().get();
 	}
 	
 
-	public final void setSeleccionado(final String seleccionado) {
-		this.seleccionadoProperty().set(seleccionado);
+	public final void setFicheroSeleccionado(final String FicheroSeleccionado) {
+		this.FicheroSeleccionadoProperty().set(FicheroSeleccionado);
 	}
 	
 
@@ -230,6 +229,11 @@ public class AccesoAdatosModel {
 		this.txtINuevoPrecio_aleatorioProperty().set(txtINuevoPrecio_aleatorio);
 	}
 	
+	
+	
+
+	
+
 	
 	
 

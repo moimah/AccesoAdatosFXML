@@ -58,7 +58,7 @@
 										<Insets left="15.0" right="15.0" />
 									</GridPane.margin>
 								</Button>
-								<Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#click" prefWidth="60.0" text="Eliminar" GridPane.columnIndex="1" GridPane.rowIndex="2">
+								<Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#clickBtnEliminar" prefWidth="60.0" text="Eliminar" GridPane.columnIndex="1" GridPane.rowIndex="2">
 									<GridPane.margin>
 										<Insets left="15.0" right="15.0" />
 									</GridPane.margin>
@@ -100,7 +100,7 @@
 												<Insets left="15.0" />
 											</HBox.margin>
 										</Button>
-										<TextField fx:id="txtRutaA" HBox.hgrow="ALWAYS">
+										<TextField fx:id="txtRutaA" promptText="Ruta de fichero/carpeta a crear, eliminar, mover, copiar o listar" HBox.hgrow="ALWAYS">
 											<HBox.margin>
 												<Insets left="15.0" right="30.0" />
 											</HBox.margin>
@@ -114,7 +114,7 @@
 												<Insets left="15.0" />
 											</HBox.margin>
 										</Button>
-										<TextField fx:id="txtRutaB" HBox.hgrow="ALWAYS">
+										<TextField fx:id="txtRutaB" promptText="Ruta de destino a copiar/mover" HBox.hgrow="ALWAYS">
 											<HBox.margin>
 												<Insets left="15.0" right="30.0" />
 											</HBox.margin>
