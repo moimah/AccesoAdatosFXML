@@ -8,9 +8,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleGroup;
-
+import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.ParsePosition;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -30,7 +33,12 @@ import javax.swing.filechooser.FileSystemView;
 
 import com.sun.marlin.DDasher;
 
+import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ListChangeListener.Change;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.ListView;
@@ -38,11 +46,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 
 import javafx.scene.control.Tab;
-
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.RadioButton;
 
 import javafx.scene.layout.VBox;
 import model.AccesoAdatosModel;
+import model.AccesoAleatorio;
+import model.Residencia;
 import javafx.scene.control.TableView;
 
 public class AccesoAdatosController implements Initializable{
@@ -52,7 +62,6 @@ public class AccesoAdatosController implements Initializable{
 	AccesoAdatosModel model = new AccesoAdatosModel();
 	
 	private String ruta_actual; 
-	
 	@FXML
 	private VBox viewAccesoAdatos;
 	@FXML
@@ -106,23 +115,48 @@ public class AccesoAdatosController implements Initializable{
 	@FXML
 	private RadioButton rdSi_aleatorio;
 	@FXML
+	private ToggleGroup comedor;
+	@FXML
 	private RadioButton rd_no_aleatorio;
 	@FXML
 	private Tab tabRegistrosAleatorio;
 	@FXML
-	private TextField txtIdesidencia_aleatorioAltas;
+	private TextField txt_idResidencia_registro;
+	@FXML
+	private TextField txtNuevoPrecio_registro;
 	@FXML
 	private Button btnBuscar_aleatorio;
 	@FXML
 	private Button btn_modificarPrecio_aleatorio;
 	@FXML
 	private Button btnMostrartodo_aleatorio;
+	@FXML	
+	private TableView <Residencia> tvBusquedaResidencia_aleatorio;
 	@FXML
-	private TableView tvBusquedaResidencia_aleatorio;
+	private TableColumn <Residencia, Integer> tvBusquedaResidencia_aleatorio_id;
 	@FXML
-	private TableView tvTodasResidencias_aleatorio;
+	private TableColumn <Residencia, String> tvBusquedaResidencia_aleatorio_nombre;
 	@FXML
-	private TextField txtNuevoPrecio_aleatorio;
+	private TableColumn <Residencia, String> tvBusquedaResidencia_aleatorio_codigo_universidad;
+	@FXML
+	private TableColumn  <Residencia, Integer> tvBusquedaResidencia_aleatorio_precio;
+	@FXML
+	private TableColumn <Residencia, Boolean> tvBusquedaResidencia_aleatorio_comedor;
+
+	
+	@FXML
+	private TableView <Residencia> tvTodasResidencias_aleatorio;
+	@FXML
+	private TableColumn <Residencia, Integer> tvTodasResidencias_aleatorio_id;
+	@FXML
+	private TableColumn <Residencia, String> tvTodasResidencias_aleatorio_nombre;
+	@FXML
+	private TableColumn <Residencia, String> tvTodasResidencias_aleatorio_universidad;
+	@FXML
+	private TableColumn  <Residencia, Boolean> tvTodasResidencias_aleatorio_comedor;
+	@FXML
+	private TableColumn  <Residencia, Integer>tvTodasResidencias_aleatorio_precio;
+
 	
 	
 	public AccesoAdatosController() throws IOException {
@@ -137,7 +171,7 @@ public class AccesoAdatosController implements Initializable{
 		
 		
 		
-		//BINDEOS
+		//BINDEOS ACCESO A FICHEROS
 		
 		txtRutaA.textProperty().bindBidirectional(model.txtRutaAProperty());
 		txtRutaB.textProperty().bindBidirectional(model.txtRutaBProperty());
@@ -145,21 +179,74 @@ public class AccesoAdatosController implements Initializable{
 				
 		model.lpFicherosProperty().bindBidirectional(lvFicheros.itemsProperty()); //Bindeo de listas
 		model.FicheroSeleccionadoProperty().bind(lvFicheros.getSelectionModel().selectedItemProperty()); //Bindeo del seleccionado
-		model.txtContenidoProperty().bindBidirectional(txtContenido.textProperty());
+		model.txtContenidoProperty().bindBidirectional(txtContenido.textProperty());				
 		
 		
+		//BINDEOS ACCESO A ALEATORIO
 		
-		//LISTENERS PROPIOS
+
+		model.txtIdResidencia_aleatorioProperty().bindBidirectional(txtIdResidencia_aleatorio.textProperty());	
+		model.txt_nombre_aleatorioProperty().bindBidirectional(txt_nombre_aleatorio.textProperty());	
+		txt_nombre_aleatorio.textProperty().bindBidirectional(model.txt_nombre_aleatorioProperty());
+		model.txt_codUniversidad_aleatorioProperty().bindBidirectional(txt_codUniversidad_aleatorio.textProperty());
+		model.txt_precioMensualAleatorioProperty().bindBidirectional(txt_precioMensualAleatorio.textProperty());
+		model.txt_idResidencia_registroProperty().bindBidirectional(txt_idResidencia_registro.textProperty());
+		model.txtNuevoPrecio_registroProperty().bindBidirectional(txtNuevoPrecio_registro.textProperty());
+		
 		
 	
+		
+		//LISTENERS/METODOS ACCESO A FICHEROS
+		
+		
+		textFieldFormmater(this.txtIdResidencia_aleatorio); // Permite solo la entrada de valores numericos
+		textFieldFormmater(this.txt_precioMensualAleatorio); // Permite solo la entrada de valores numericos
+		textFieldFormmater(this.txt_idResidencia_registro); // Permite solo la entrada de valores numericos
+		textFieldFormmater(this.txtNuevoPrecio_registro); // Permite solo la entrada de valores numericos
+		
+		 //Listeners para activar boton de alta
+		txtIdResidencia_aleatorio.textProperty().addListener((o, ov, nv) -> onActivarButtonAlta(nv));
+		txt_nombre_aleatorio.textProperty().addListener((o, ov, nv) -> onActivarButtonAlta(nv));
+		txt_codUniversidad_aleatorio.textProperty().addListener((o, ov, nv) -> onActivarButtonAlta(nv));
+		txt_precioMensualAleatorio.textProperty().addListener((o, ov, nv) -> onActivarButtonAlta(nv));
+		
+		//Listeners que limitan el tamaño de los campos de texto
+		txt_nombre_aleatorio.textProperty().addListener((o, ov, nv) -> onAddTextLimiterTxtNombreAleatorio(nv,ov));
+		txt_codUniversidad_aleatorio.textProperty().addListener((o, ov, nv) -> onAddTextLimiterTxCodUniversidadAleatorio(nv,ov));
+		
+		//Listeners para activiar el boton buscar
+		txt_idResidencia_registro.textProperty().addListener((o, ov, nv) -> onActivarButtonBuscar(nv));
+		
+		//Listeners para activar el boton modificar precio
+		txtNuevoPrecio_registro.textProperty().addListener((o, ov, nv) -> onActivarButtonModificarPrecio(nv));
+		txt_idResidencia_registro.textProperty().addListener((o, ov, nv) -> onActivarButtonModificarPrecio(nv));
+	
 			
+		//Bindeos de tableView 1
+	
+		tvBusquedaResidencia_aleatorio_id.setCellValueFactory(new PropertyValueFactory<Residencia, Integer>("idResidencia"));
+		tvBusquedaResidencia_aleatorio_nombre.setCellValueFactory(new PropertyValueFactory<Residencia, String>("nombreResidencia"));
+		tvBusquedaResidencia_aleatorio_codigo_universidad.setCellValueFactory(new PropertyValueFactory<Residencia, String>("codUniversidad"));
+		tvBusquedaResidencia_aleatorio_precio.setCellValueFactory(new PropertyValueFactory<Residencia, Integer>("precio"));
+		tvBusquedaResidencia_aleatorio_comedor.setCellValueFactory(new PropertyValueFactory<Residencia, Boolean>("comedor"));
+		
+		
+		tvTodasResidencias_aleatorio_id.setCellValueFactory(new PropertyValueFactory<Residencia, Integer>("idResidencia"));
+		tvTodasResidencias_aleatorio_nombre.setCellValueFactory(new PropertyValueFactory<Residencia, String>("nombreResidencia"));
+		tvTodasResidencias_aleatorio_universidad.setCellValueFactory(new PropertyValueFactory<Residencia, String>("codUniversidad"));
+		tvTodasResidencias_aleatorio_precio.setCellValueFactory(new PropertyValueFactory<Residencia, Integer>("precio"));
+		tvTodasResidencias_aleatorio_comedor.setCellValueFactory(new PropertyValueFactory<Residencia, Boolean>("comedor"));
+		
+		
+		
+		
+		
 				
 	}
 	
 	
 	
 
-	
 	//LISTERNES GENERADOS AUTOMATICOS
 	
 	
@@ -444,8 +531,9 @@ public class AccesoAdatosController implements Initializable{
 	
 	public void clickBtnFicheros(ActionEvent event) {		
 		String path = model.getTxtRutaA();
+		if(model.getTxtRutaA() != null) {
 		listarFicherosYcarpetas(path);
-		
+		}
 		
 	}
 	// Event Listener on Button[#btnContenido].onAction
@@ -472,6 +560,8 @@ public class AccesoAdatosController implements Initializable{
 	// Event Listener on Button[#btnModificar].onAction
 	@FXML
 	public void clickBtnModificar(ActionEvent event) {
+		
+		 	
 			
 		String seleccionado = model.FicheroSeleccionadoProperty().get(); //Ruta de entrada		
 		String path = ruta_actual + "\\" + seleccionado; //Ruta actual
@@ -482,22 +572,24 @@ public class AccesoAdatosController implements Initializable{
 		
 		//Si el fichero existe cargar contenido a la variable y escribirlo
 		if(fichero.exists()) { 		
-		 modificado = model.getTxtContenido();				
-			
+		 modificado = model.getTxtContenido();	
+	
+		 
 		
     	try {
 			FileWriter fw = new FileWriter(fichero);
 			fw.write(modificado);
 			fw.close();
-				
+			
 			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 		}
-		
-		
+    	
+    				
 		}
+		
 		
 	}
 	
@@ -610,32 +702,49 @@ public class AccesoAdatosController implements Initializable{
 		
 	}
 	// Event Listener on Button[#btnAlta_aleatorio].onAction
+	
+	
+	
+	///////////////ACCESO ALEATORIO////////////////
+	
+	
 	@FXML
 	public void clickBtnAlta_aleatorio(ActionEvent event) {
-		// TODO Autogenerated
+		boolean exito = registrarResidencia();
+		
+		if(exito) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Acceso a datos");
+			alert.setHeaderText("Enhorabuena!");
+			alert.setContentText("Se ha registrado correctamente!");
+		}
+		
+		
 	}
 	// Event Listener on Button[#btnBuscar_aleatorio].onAction
 	@FXML
-	public void clickBtnBuscar_aleatorio(ActionEvent event) {
-		// TODO Autogenerated
+	public void clickBtnBuscar_aleatorio(ActionEvent event) {	
+		buscarResidencia();
+		
 	}
 	// Event Listener on Button[#btn_modificarPrecio_aleatorio].onAction
 	@FXML
 	public void clickBtn_modificarPrecio_aleatorio(ActionEvent event) {
-		// TODO Autogenerated
+		modificarPrecio();
 	}
 	// Event Listener on Button[#btnMostrartodo_aleatorio].onAction
 	@FXML
 	public void clickBtnMostrartodo_aleatorio(ActionEvent event) {
-		// TODO Autogenerated
+		listarResidencia();
 	}
 
 	public VBox getViewAccesoAdatos() {
 		return viewAccesoAdatos;
 	}
 	
-	//METODOS 
+	////////////////METODOS PROPIOS ACCESO ALEATORIO///////////////////////////////
 	
+		
     /**
 	 * Metodo que crea un file and directory chooser, 		
 	 * Cambia estilo por defecto a tipo windows
@@ -741,6 +850,14 @@ public class AccesoAdatosController implements Initializable{
   		         
   }
   
+  /**
+	 * Metodo para copiar carpetas y ficheros de manera recursiva
+	 * Recibe por parametro la ruta de origen y la de destino
+	 * Devuelve true si se ha movido y false si no	 
+	 * @param d1 File
+	 * @param d2 File
+	 * @return exito
+	 */
 
   
   private boolean copiadoRecursivo(File d1, File d2) {
@@ -914,6 +1031,286 @@ public class AccesoAdatosController implements Initializable{
 	
 	
 	
+	//////METODOS PROPIOS ACCESO ALEATORIO
 	
+	
+	/**
+	* Metodo tipo TextFormater  
+	* se encarga de que solo se puedan introducir
+	* valores de coma flotante en los textfield
+	* @param TextField txt
+	*/ 
+	
+	public void textFieldFormmater(TextField txt) {
+		DecimalFormat format = new DecimalFormat("#.0");
+		txt.setTextFormatter(new TextFormatter<>(c -> {
+			if (c.getControlNewText().isEmpty()) {
+				return c;
+			}
+			ParsePosition parsePosition = new ParsePosition(0);
+			Object object = format.parse(c.getControlNewText(), parsePosition);
+
+			if (object == null || parsePosition.getIndex() < c.getControlNewText().length()) {
+				return null;
+			} else {
+				return c;
+			}
+		}));
+	}
+	
+	
+	
+	/**
+	* Habilita el botón btnAlta_aleatorio
+	* si se han completado todos los campos de texto
+	* @param  nv
+	*/ 
+	
+	private void  onActivarButtonAlta(String nv) {
+				
+		
+		if(model.getTxtIdResidencia_aleatorio().length()>0 && model.getTxt_nombre_aleatorio().length()>0 && model.getTxt_codUniversidad_aleatorio().length()>0  && model.getTxt_precioMensualAleatorio().length()>0) {
+			
+			btnAlta_aleatorio.setDisable(false);
+		
+		}else {
+			btnAlta_aleatorio.setDisable(true);
+		}
+		
+	
+		
+	}
+	
+	/**
+	* Habilita el botón btnBuscar_aleatorio
+	* si se han completado todos los campos de texto
+	* @param  nv
+	*/ 
+	
+	private void  onActivarButtonBuscar(String nv) {
+				
+		
+		if(model.getTxt_idResidencia_registro().length()>0) {
+			
+			btnBuscar_aleatorio.setDisable(false);
+		
+		}else {
+			btnBuscar_aleatorio.setDisable(true);
+		}
+		
+			
+	}
+	
+	
+	
+	private void  onActivarButtonModificarPrecio(String nv) {
+				
+		
+		if(model.getTxt_idResidencia_registro().length()>0 && model.getTxtNuevoPrecio_registro().length()>0) {			
+			btn_modificarPrecio_aleatorio.setDisable(false);
+		
+		}else {
+			btn_modificarPrecio_aleatorio.setDisable(true);
+		}
+		
+			
+	}
+	
+	/**
+	 * Limita el campo de texto a 10 caracteres	
+	 * @param ov
+	 * @param nv
+	 */
+
+	private void onAddTextLimiterTxtNombreAleatorio(String nv, String ov) {
+
+		if (nv.length() == 10) {
+			model.setTxt_nombre_aleatorio(ov);
+		}
+	}
+
+	/**
+	 * Limita el campo de texto a 6 caracteres	  
+	 * @param ov
+	 * @param nv
+	 */
+
+	private void onAddTextLimiterTxCodUniversidadAleatorio(String nv, String ov) {
+
+		if (nv.length() == 6) {
+			model.setTxt_codUniversidad_aleatorio(ov);
+		}
+	}
+	
+	/**
+	 * Registra una residencia usando el metodo estatico
+	 * registrarResidencia de AccesoAleatorio, devuelve true
+	 * si se ha registrado
+	 * @return exito
+	 */
+	
+	
+private boolean registrarResidencia() {
+
+		
+	boolean exito = false;
+	
+		int idResidencia = Integer.parseInt(model.getTxtIdResidencia_aleatorio());
+		String nombreResidencia = model.getTxt_nombre_aleatorio();
+		String codUniversidad = model.getTxt_codUniversidad_aleatorio();
+		int precio = Integer.parseInt(model.getTxt_precioMensualAleatorio());
+		boolean comedor;
+		
+		if(this.comedor.equals(rdSi_aleatorio)) {
+			comedor = true;
+		}else {
+			comedor = false;
+		}
+		
+		Residencia r = new Residencia(idResidencia, nombreResidencia, codUniversidad, precio, comedor);
+		
+			//Si no existe la residencia
+		if(! AccesoAleatorio.existeResidencia("random.dat", idResidencia)) {
+			
+			exito = AccesoAleatorio.registrarResidencia("random.dat", r); // Registrar la residencia
+			
+			if (exito) { //Si se ha registrado manda mensaje
+				
+				Alert alerta = new Alert(AlertType.INFORMATION);
+				alerta.setTitle("Acceso aleatorio");
+				alerta.setHeaderText("Registrar residencia");
+				alerta.setContentText("Ha registrado la residencia");
+				alerta.showAndWait();
+				
+				model.setTxtIdResidencia_aleatorio("");
+				model.setTxt_nombre_aleatorio("");
+				model.setTxt_codUniversidad_aleatorio("");
+				model.setTxt_precioMensualAleatorio("");
+			
+		}
+						
+		}else { //Si existe enviar mensaje de que no se ha podido registrar
+			
+			Alert alerta = new Alert(AlertType.ERROR);
+			alerta.setTitle("Acceso aleatorio");
+			alerta.setHeaderText("Registrar residencia");
+			alerta.setContentText("No se ha podido registrar");
+			alerta.showAndWait();
+			
+			model.setTxtIdResidencia_aleatorio("");
+			model.setTxt_nombre_aleatorio("");
+			model.setTxt_codUniversidad_aleatorio("");
+			model.setTxt_precioMensualAleatorio("");
+			
+	}
+		
+		return exito;
+	}
+
+/**
+ * Busca una residencia y la muestra en la tabla
+ * devuelve true si se ha encontrado, si no false y envia
+ * un mensaje 
+ * si se ha registrado
+ * @return exito
+ */
+
+private boolean buscarResidencia() {
+	
+	boolean exito = false; 
+	
+	int id= Integer.parseInt(model.getTxt_idResidencia_registro());
+	
+	Residencia r = AccesoAleatorio.buscarResidencia("random.dat", id);
+	
+	if (r!=null) {  // Si se ha encontrado la residencia, mostrar y rellenar el tableView	
+		tvBusquedaResidencia_aleatorio.setVisible(true); 	//Mostrar las tablas
+		tvTodasResidencias_aleatorio.setVisible(false); 	//Ocultar la tabla inferior
+		
+		ObservableList<Residencia> residencias = FXCollections.observableArrayList();
+		residencias.add(r);	
+		tvBusquedaResidencia_aleatorio.setItems(residencias);
+	
+	}else { //Si no se ha encontrado mensaje de error
+		tvBusquedaResidencia_aleatorio.setVisible(false); 	//Ocultar las tablas
+		Alert alerta = new Alert(AlertType.ERROR);
+		alerta.setTitle("Acceso aleatorio");
+		alerta.setHeaderText("Registrar residencia");
+		alerta.setContentText("No existe la residencia");
+		alerta.showAndWait();
+	}
+	
+	return exito; 
+}
+
+/**
+ * Muestra el contenido de la lista de residencias
+ * devuelve true si hay registros, si no false y envia
+ * un mensaje 
+ * si se ha registrado
+ * @return exito
+ */
+private boolean listarResidencia() {
+	
+	ArrayList lista = AccesoAleatorio.leerResidencias("random.dat");
+	
+	if(lista.size()>0) { //Si se han obtenido resultados cargar en el tableview la lista
+		tvTodasResidencias_aleatorio.setVisible(true); 	//Mostrar las tablas
+		tvBusquedaResidencia_aleatorio.setVisible(false); 	//Ocultar la tabla superior
+		
+		ObservableList<Residencia> residencias = FXCollections.observableArrayList(lista);
+		tvTodasResidencias_aleatorio.setItems(residencias);
+			
+		
+	}else {
+		tvTodasResidencias_aleatorio.setVisible(false); 	//Ocultar las tablas
+		Alert alerta = new Alert(AlertType.ERROR);
+		alerta.setTitle("Acceso aleatorio");
+		alerta.setHeaderText("Registrar residencia");
+		alerta.setContentText("No hay registros");
+		alerta.showAndWait();
+	}
+	
+	return false;
 	
 }
+
+private void modificarPrecio() {
+	
+	int precio = Integer.parseInt(model.getTxtNuevoPrecio_registro());	
+	int id = Integer.parseInt(model.getTxtNuevoPrecio_registro());
+	
+	boolean modificado = AccesoAleatorio.modificarPrecioResidencia("random.dat", 1, precio);
+	System.out.println(modificado);
+	
+	if(modificado) {	
+		
+		tvBusquedaResidencia_aleatorio.setVisible(false); 	//Ocultar las tablas	
+		tvTodasResidencias_aleatorio.setVisible(false); //Ocultar las tablas
+		
+		Alert alerta = new Alert(AlertType.INFORMATION);
+		alerta.setTitle("Acceso aleatorio");
+		alerta.setHeaderText("Modificar precio");
+		alerta.setContentText("Se ha modificado correctamente");
+		alerta.showAndWait();
+	}else {
+		
+		tvBusquedaResidencia_aleatorio.setVisible(false); 	//Ocultar las tablas	
+		tvTodasResidencias_aleatorio.setVisible(false); //Ocultar las tablas
+		
+		Alert alerta = new Alert(AlertType.ERROR);
+		alerta.setTitle("Acceso aleatorio");
+		alerta.setHeaderText("Modificar precio");
+		alerta.setContentText("No se ha modificado, comprueba que exista una residencia con ese índice");
+		alerta.showAndWait();
+	}
+	
+}
+
+
+
+
+
+}
+
+

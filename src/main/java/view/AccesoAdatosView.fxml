@@ -128,7 +128,7 @@
 								</Button>
 								<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
 									<children>
-										<RadioButton fx:id="rdFichero" mnemonicParsing="false" text="Es fichero">
+										<RadioButton fx:id="rdFichero" mnemonicParsing="false" text="Es fichero" visible="false">
 											<padding>
 												<Insets right="15.0" />
 											</padding>
@@ -136,7 +136,7 @@
 												<ToggleGroup fx:id="tgFicheros" />
 											</toggleGroup>
 										</RadioButton>
-										<RadioButton fx:id="rdCarpeta" mnemonicParsing="false" selected="true" text="Es carpeta" toggleGroup="$tgFicheros" />
+										<RadioButton fx:id="rdCarpeta" mnemonicParsing="false" selected="true" text="Es carpeta" toggleGroup="$tgFicheros" visible="false" />
 									</children>
 									<opaqueInsets>
 										<Insets />
@@ -243,12 +243,15 @@
 														</Button>
 														<HBox prefHeight="19.0" prefWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
 															<children>
-																<RadioButton fx:id="rdSi_aleatorio" mnemonicParsing="false" text="Si">
+																<RadioButton fx:id="rdSi_aleatorio" mnemonicParsing="false" text="Si" toggleGroup="$comedor">
 																	<HBox.margin>
 																		<Insets left="30.0" />
 																	</HBox.margin>
+                                                   <toggleGroup>
+                                                      <ToggleGroup fx:id="comedor" />
+                                                   </toggleGroup>
 																</RadioButton>
-																<RadioButton fx:id="rd_no_aleatorio" mnemonicParsing="false" text="No">
+																<RadioButton fx:id="rd_no_aleatorio" mnemonicParsing="false" selected="true" text="No" toggleGroup="$comedor">
 																	<HBox.margin>
 																		<Insets left="30.0" />
 																	</HBox.margin>
@@ -267,7 +270,7 @@
 
 										<Tab fx:id="tabRegistrosAleatorio" text="Registros y modificar precio">
 											<content>
-												<GridPane alignment="TOP_CENTER" hgap="10.0" minHeight="0.0" minWidth="400.0" prefHeight="443.0" vgap="10.0">
+												<GridPane alignment="TOP_CENTER" hgap="10.0" minHeight="0.0" minWidth="400.0" prefHeight="427.0" prefWidth="801.0" vgap="10.0">
 													<columnConstraints>
 														<ColumnConstraints halignment="CENTER" maxWidth="513.0" minWidth="105.0" prefWidth="178.0" />
 														<ColumnConstraints halignment="CENTER" maxWidth="513.0" minWidth="105.0" prefWidth="178.0" />
@@ -275,14 +278,14 @@
 													<rowConstraints>
 														<RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
 														<RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
-														<RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" />
-														<RowConstraints prefHeight="30.0" vgrow="NEVER" />
-														<RowConstraints prefHeight="30.0" />
-														<RowConstraints prefHeight="30.0" vgrow="ALWAYS" />
+														<RowConstraints maxHeight="31.0" minHeight="19.0" prefHeight="26.0" />
+														<RowConstraints maxHeight="64.0" minHeight="29.0" prefHeight="64.0" vgrow="NEVER" />
+														<RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="167.0" />
+														<RowConstraints maxHeight="210.0" minHeight="69.0" prefHeight="73.0" vgrow="ALWAYS" />
 
 													</rowConstraints>
 													<children>
-														<TextField fx:id="txtIdesidencia_aleatorioAltas" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+														<TextField fx:id="txt_idResidencia_registro" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
 															<GridPane.margin>
 																<Insets left="30.0" right="30.0" />
 															</GridPane.margin>
@@ -302,7 +305,7 @@
 																		<Insets left="30.0" />
 																	</HBox.margin>
 																</Button>
-																<Button fx:id="btn_modificarPrecio_aleatorio" maxWidth="109.0" minWidth="100.0" mnemonicParsing="false" onAction="#clickBtn_modificarPrecio_aleatorio" prefHeight="25.0" prefWidth="109.0" text="Modificar precio">
+																<Button fx:id="btn_modificarPrecio_aleatorio" disable="true" maxWidth="109.0" minWidth="100.0" mnemonicParsing="false" onAction="#clickBtn_modificarPrecio_aleatorio" prefHeight="25.0" prefWidth="109.0" text="Modificar precio">
 																	<HBox.margin>
 																		<Insets left="25.0" />
 																	</HBox.margin>
@@ -314,31 +317,29 @@
 																</Button>
 															</children>
 														</HBox>
-														<TableView fx:id="tvBusquedaResidencia_aleatorio" disable="true" prefHeight="44.0" prefWidth="596.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-															<columns>
-																<TableColumn prefWidth="55.0" text="Índice" />
-																<TableColumn prefWidth="175.0" text="Nombre" />																
-																<TableColumn prefWidth="96.0" text="Id. residencia" />
-																<TableColumn prefWidth="110.0" text="Cod.Universidad" />
-																<TableColumn prefWidth="119.0" text="Precio" />
-																<TableColumn prefWidth="145.0" text="Comedor" />
+														<TableView fx:id="tvBusquedaResidencia_aleatorio" prefHeight="98.0" prefWidth="701.0" visible="false" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+															<columns>																
+																<TableColumn fx:id="tvBusquedaResidencia_aleatorio_id" prefWidth="96.0" text="Id. residencia" />
+																<TableColumn fx:id="tvBusquedaResidencia_aleatorio_nombre" prefWidth="175.0" text="Nombre" />
+																<TableColumn fx:id="tvBusquedaResidencia_aleatorio_codigo_universidad" prefWidth="110.0" text="Cod.Universidad" />
+																<TableColumn fx:id="tvBusquedaResidencia_aleatorio_precio" prefWidth="119.0" text="Precio" />
+																<TableColumn fx:id="tvBusquedaResidencia_aleatorio_comedor" prefWidth="200.0" text="Comedor" />
 															</columns>
 															<GridPane.margin>
 																<Insets />
 															</GridPane.margin>
 														</TableView>
 
-														<TableView fx:id="tvTodasResidencias_aleatorio" disable="true" maxHeight="509.0" prefHeight="44.0" prefWidth="509.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-															<columns>
-																<TableColumn prefWidth="55.0" text="Índice" />
-																<TableColumn prefWidth="175.0" text="Nombre" />																
-																<TableColumn prefWidth="96.0" text="Id. residencia" />
-																<TableColumn prefWidth="110.0" text="Cod.Universidad" />
-																<TableColumn prefWidth="119.0" text="Precio" />
-																<TableColumn prefWidth="145.0" text="Comedor" />
+														<TableView fx:id="tvTodasResidencias_aleatorio" maxHeight="509.0" minHeight="0.0" prefHeight="500.0" prefWidth="701.0" visible="false" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+															<columns>																
+																<TableColumn fx:id="tvTodasResidencias_aleatorio_id" prefWidth="96.0" text="Id. residencia" />
+																<TableColumn fx:id="tvTodasResidencias_aleatorio_nombre" prefWidth="175.0" text="Nombre" />
+																<TableColumn fx:id="tvTodasResidencias_aleatorio_universidad" prefWidth="110.0" text="Cod.Universidad" />
+																<TableColumn fx:id="tvTodasResidencias_aleatorio_precio" prefWidth="119.0" text="Precio" />																
+																<TableColumn fx:id="tvTodasResidencias_aleatorio_comedor" prefWidth="200.0" text="Comedor" />
 															</columns>
 															<GridPane.margin>
-																<Insets top="30.0" />
+																<Insets />
 															</GridPane.margin>
 														</TableView>
                                           <Label prefWidth="80.0" text="Nuevo precio" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
@@ -349,7 +350,7 @@
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField fx:id="txtNuevoPrecio_aleatorio" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <TextField fx:id="txtNuevoPrecio_registro" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets left="30.0" right="30.0" />
                                              </GridPane.margin>
