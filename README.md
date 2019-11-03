@@ -15,5 +15,5 @@ Aplicación que:
  - TextLimiters
 
 
-
+**Fataría Limpiar el codigo de la parte de acceso a ficheros creando una clase con métodos estáticos, y incorporar propertys en el model para los radioButton y TableView**
  
